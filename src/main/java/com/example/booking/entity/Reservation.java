@@ -18,7 +18,7 @@ public class Reservation {
     private Desk desk;
 
     private LocalDateTime startTime;
-    private LocalDateTime endTime = startTime.plusDays(2);
+    private LocalDateTime endTime;
 
 
     public Integer getId() {
