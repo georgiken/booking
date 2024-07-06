@@ -10,6 +10,21 @@ public class Desk {
 
     @Id
     private Integer id;
-    private int capacity;
-    private boolean available;
+    private Integer capacity;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
 }
