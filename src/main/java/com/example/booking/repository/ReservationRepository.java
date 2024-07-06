@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findByEndTimeAfter(LocalDateTime startTime);
+    List<Reservation> findByEndTimeBefore(LocalDateTime startTime);
 }

@@ -21,7 +21,7 @@ public class ReservationService {
 
     public List<?> getAvailableReservations(AvailableRequest request) {
         LocalDateTime startTime = LocalDateTime.of(request.getDate(), request.getTime());
-        List<Reservation> reservations = reservationRepository.findByEndTimeAfter(startTime);
+        List<Reservation> reservations = reservationRepository.findByEndTimeBefore(startTime);
         if (reservations.isEmpty()) {
             return deskService.getAll();
         }
