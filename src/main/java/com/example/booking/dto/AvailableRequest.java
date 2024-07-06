@@ -5,6 +5,8 @@ import java.time.LocalTime;
 
 public class AvailableRequest {
     private LocalDate date;
+    private LocalTime time;
+
 
     public LocalTime getTime() {
         return time;
@@ -21,6 +23,4 @@ public class AvailableRequest {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-
-    private LocalTime time;
 }
