@@ -1,27 +1,17 @@
 package com.example.booking.dto;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class AvailableRequest {
     private LocalDate date;
-    private int hours;
-    private int minutes;
+    private Time time;
 
-    public int getHours() {
-        return hours;
+    public Time getTime() {
+        return time;
     }
 
-    public void setHours(int hours) {
-        this.hours = hours;
-    }
-
-    public int getMinutes() {
-        return minutes;
-    }
-
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
+    public void setTime(Time time) {
+        this.time = time;
     }
 
     public LocalDate getDate() {

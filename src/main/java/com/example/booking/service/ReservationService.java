@@ -52,7 +52,7 @@ public class ReservationService {
         return reservationRepository.deleteByDeskIdAndUserId(reservation.getDesk().getId(), reservation.getUser().getId());
     }
 
-    public Reservation getByUserIdAndDeskId(Integer userId, Integer deskId) {
-        return reservationRepository.findAllByUserIdAndDeskId(userId, deskId);
+    public List<Reservation> getLastByUserIdAndDeskId(Integer userId, Integer deskId) {
+       return reservationRepository.findAllByUserIdAndDeskId(userId, deskId);
     }
 }
