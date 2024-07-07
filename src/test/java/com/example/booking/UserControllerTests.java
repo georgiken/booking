@@ -45,14 +45,12 @@ class UserControllerTests {
 
     @Test
     public void testRegister() throws Exception {
-        // Mock request
         RegisterRequest request = new RegisterRequest();
         request.setName("Test");
         request.setEmail("test@example.com");
         request.setPassword("blabla2004");
         request.setPhone_number("89533518417");
 
-        // Mock service response
         User newUser = new User();
         newUser.setId(1);
         newUser.setName(request.getName());
@@ -70,7 +68,6 @@ class UserControllerTests {
 
     @Test
     public void testLogin() throws Exception {
-        // Mock request
         LoginRequest request = new LoginRequest();
         request.setEmail("test@example.com");
         request.setPassword("blabla2004");
@@ -83,7 +80,6 @@ class UserControllerTests {
         when(userService.getUserByEmail(anyString())).thenReturn(Optional.of(mockUser));
         when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
-        // Perform POST request
         mockMvc.perform(post("/api/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(request)))
