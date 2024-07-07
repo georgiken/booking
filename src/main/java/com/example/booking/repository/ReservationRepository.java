@@ -14,5 +14,5 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     Reservation deleteByDeskIdAndUserId(Integer id, Integer id1);
 
-    Reservation findAllByUserIdAndDeskId(Integer userId, Integer deskId);
+    List<Reservation> findAllByUserIdAndDeskId(Integer userId, Integer deskId);
 }
