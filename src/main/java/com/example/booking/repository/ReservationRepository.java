@@ -11,4 +11,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findByEndTimeBefore(LocalDateTime startTime);
 
     Optional<List<Reservation>> findAllByUserId(Integer userId);
+
+    Reservation deleteByDeskIdAndUserId(Integer id, Integer id1);
+
+    Reservation findAllByUserIdAndDeskId(Integer userId, Integer deskId);
 }

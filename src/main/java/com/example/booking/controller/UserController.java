@@ -91,7 +91,7 @@ public class UserController {
                 return ResponseEntity.status(401).body(new ErrorResponse(401, "Unauthorized", "Invalid password"));
             }
             log.info("Login successful");
-            String accessToken = jwtTokenProvider.generateToken(logUser.getName(), 3600);
+            String accessToken = jwtTokenProvider.generateToken(logUser.getEmail(), 3600);
 
             TokenResponse token = new TokenResponse();
             token.setAccessToken(accessToken);

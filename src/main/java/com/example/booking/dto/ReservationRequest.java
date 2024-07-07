@@ -3,10 +3,27 @@ package com.example.booking.dto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class AvailableRequest {
+public class ReservationRequest {
+    private Integer deskId;
     private LocalDate date;
     private int hours;
     private int minutes;
+
+    public Integer getDeskId() {
+        return deskId;
+    }
+
+    public void setDeskId(Integer deskId) {
+        this.deskId = deskId;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
     public int getHours() {
         return hours;
@@ -22,13 +39,5 @@ public class AvailableRequest {
 
     public void setMinutes(int minutes) {
         this.minutes = minutes;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 }

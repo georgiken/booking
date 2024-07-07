@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DeskService {
@@ -15,6 +16,14 @@ public class DeskService {
 
     public List<Desk> getAll() {
         return deskRepository.findAll();
+    }
+
+    public Optional<Desk> getById(Integer id) {
+        return deskRepository.findById(id);
+    }
+
+    public Desk update(Desk desk) {
+        return deskRepository.save(desk);
     }
 
 }
