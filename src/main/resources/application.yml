@@ -2,9 +2,9 @@ spring:
   application:
     name: booking
   datasource:
-    url: jdbc:postgresql://host.docker.internal:5432/booking_db
-    username: postgres
-    password: georgiken2005
+    url: jdbc:postgresql://host.docker.internal:5432/your_db
+    username: your_username
+    password: your_password
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
