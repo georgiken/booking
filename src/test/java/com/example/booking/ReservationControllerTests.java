@@ -1,24 +1,5 @@
 package com.example.booking;
 
-import com.example.booking.controller.ReservationController;
-import com.example.booking.dto.AvailableRequest;
-import com.example.booking.dto.ReservationRequest;
-import com.example.booking.entity.Desk;
-import com.example.booking.entity.Reservation;
-import com.example.booking.entity.User;
-import com.example.booking.service.DeskService;
-import com.example.booking.service.ReservationService;
-import com.example.booking.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.web.servlet.MockMvc;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,13 +8,35 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.example.booking.controller.ReservationController;
+import com.example.booking.dto.AvailableRequest;
+import com.example.booking.dto.ReservationRequest;
+import com.example.booking.dto.Time;
+import com.example.booking.entity.Desk;
+import com.example.booking.entity.Reservation;
+import com.example.booking.entity.User;
+import com.example.booking.service.DeskService;
+import com.example.booking.service.ReservationService;
+import com.example.booking.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @WebMvcTest(ReservationController.class)
@@ -63,8 +66,10 @@ public class ReservationControllerTests {
     public void testGetAvailableReservations() throws Exception {
         AvailableRequest request = new AvailableRequest();
         request.setDate(LocalDate.now());
-        request.setHours(10);
-        request.setMinutes(0);
+        Time time = new Time();
+        time.setHour(12);
+        time.setMinute(12);
+        request.setTime(time);
 
         List<Desk> availableDesks = new ArrayList<>();
         availableDesks.add(new Desk());
@@ -85,8 +90,10 @@ public class ReservationControllerTests {
 
         ReservationRequest request = new ReservationRequest();
         request.setDate(LocalDate.now());
-        request.setHours(14);
-        request.setMinutes(0);
+        Time time = new Time();
+        time.setHour(12);
+        time.setMinute(12);
+        request.setTime(time);
         request.setDeskId(1);
 
         Authentication authentication = mock(Authentication.class);
@@ -130,7 +137,6 @@ public class ReservationControllerTests {
 
         when(userService.getUserById(anyInt())).thenReturn(Optional.of(mockUser));
         when(deskService.getById(anyInt())).thenReturn(Optional.of(mockDesk));
-        when(reservationService.getByUserIdAndDeskId(anyInt(), anyInt())).thenReturn(mockReservation);
         when(reservationService.deleteReservation(any(Reservation.class))).thenReturn(mockReservation);
 
         mockMvc.perform(delete("/api/reservations/")
