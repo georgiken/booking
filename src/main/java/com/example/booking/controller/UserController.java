@@ -41,10 +41,10 @@ public class UserController {
     private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
-    @Operation(summary = "Register a new user")
+    @Operation(summary = "Регистрация пользователя")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User registered successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class))),
-            @ApiResponse(responseCode = "400", description = "User already exists or Email already exists", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = "200", description = "Успешная регистрация", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Пользователь с такой почтой уже существует", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         log.info("Register request received: {}", registerRequest);
@@ -70,10 +70,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @Operation(summary = "Login and get a JWT token pair")
+    @Operation(summary = "Вход в аккаунт и получение wt токена")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Login successful and tokens returned", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Invalid email or password", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = "200", description = "Успешный вход", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Неверная почта или пароль", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
@@ -91,7 +91,7 @@ public class UserController {
                 return ResponseEntity.status(401).body(new ErrorResponse(401, "Unauthorized", "Invalid password"));
             }
             log.info("Login successful");
-            String accessToken = jwtTokenProvider.generateToken(logUser.getName(), 3600);
+            String accessToken = jwtTokenProvider.generateToken(logUser.getEmail(), 3600);
 
             TokenResponse token = new TokenResponse();
             token.setAccessToken(accessToken);
