@@ -41,13 +41,16 @@ public class ReservationController {
 
     @GetMapping("/available")
     @Operation(summary = "Получение самых ранних доступных столиков")
-    public List<Desk> getAvailableReservations(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+    public ResponseEntity<?> getAvailableReservations(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                @RequestParam("time.hour") int hour,
                                                @RequestParam("time.minute") int minute) {
         LocalDateTime formattedRequest = LocalDateTime.of(date, LocalTime.of(hour, minute));
 
         List<Desk> availables = reservationService.getAvailableReservations(formattedRequest);
-        return availables;
+        if (availables.isEmpty()){
+            return ResponseEntity.ok(new MessageResponse("Нет доступных столиков"));
+        }
+        return ResponseEntity.ok(availables);
     }
 
     @PostMapping("/")
@@ -94,7 +97,7 @@ public class ReservationController {
 
     @GetMapping("/")
     @Operation(summary = "Получение бронирований пользователя")
-    public ResponseEntity<List<Reservation>> getUserReservation() {
+    public ResponseEntity<?> getUserReservation() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -105,7 +108,8 @@ public class ReservationController {
         log.info("email =" + email);
         Optional<User> user = userService.getUserByEmail(email);
         if (user.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest()
+                    .body(new ErrorResponse(400, "Пользователь не найден", "Повторите авторизацию"));
         }
         Integer userId = user.get().getId();
 
@@ -117,14 +121,15 @@ public class ReservationController {
 
     @PutMapping("/update")
     @Operation(summary = "Обновление существующей брони по id стола")
-    public ResponseEntity<Reservation> updateReservation(@RequestBody ReservationRequest request) {
+    public ResponseEntity<?> updateReservation(@RequestBody ReservationRequest request) {
         Reservation reservation = new Reservation();
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = ((User) authentication.getPrincipal()).getEmail();
         Optional<User> user = userService.getUserByEmail(email);
         if (user.isEmpty()){
-            return ResponseEntity.noContent().build();
+            ResponseEntity.badRequest()
+                    .body(new ErrorResponse(400, "Пользователь не найден", "Повторите авторизацию"));
         }
         reservation.setUser(user.get());
 
@@ -135,7 +140,8 @@ public class ReservationController {
 
         Optional<Desk> desk = deskService.getById(request.getDeskId());
         if (desk.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.badRequest()
+                    .body(new ErrorResponse(400, "Такого столика нет", "Проверьте доступные столики"));
         }
 
         Desk newDesk = desk.get();
@@ -157,16 +163,14 @@ public class ReservationController {
         Optional<User> user = userService.getUserByEmail(email);
         if (user.isEmpty()){
             return ResponseEntity.badRequest().body(new ErrorResponse(
-                    400, "пользователь не найден", ""
+                    400, "пользователь не найден", "Повторите авторизацию"
             ));
         }
 
         Optional<Desk> desk = deskService.getById(deskId);
         if (desk.isEmpty()){
-            return ResponseEntity.badRequest().body(new ErrorResponse(
-                    400, "такого столика нет",
-                    ""
-            ));
+            return ResponseEntity.badRequest()
+                    .body(new ErrorResponse(400, "Такого столика нет", "Проверьте доступные столики"));
         }
         Integer userId = user.get().getId();
         List<Reservation> reservations = reservationService.getLastByUserIdAndDeskId(userId, deskId);

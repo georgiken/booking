@@ -41,7 +41,7 @@ public class UserController {
     private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
-    @Operation(summary = "Регистрация пользователя")
+    @Operation(summary = "Регистрация пользователя и получение jwt токена")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешная регистрация", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class))),
             @ApiResponse(responseCode = "400", description = "Пользователь с такой почтой уже существует", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
@@ -70,7 +70,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    @Operation(summary = "Вход в аккаунт и получение wt токена")
+    @Operation(summary = "Вход в аккаунт и получение jwt токена")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешный вход", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokenResponse.class))),
             @ApiResponse(responseCode = "401", description = "Неверная почта или пароль", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
